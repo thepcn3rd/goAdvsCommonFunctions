@@ -63,7 +63,7 @@ func PullKey(keyURL string, userAgentString string, xAbility string) string {
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	CheckError("Unable to get response from Amazon...", err, true)
+	CheckError("Unable to get response...", err, true)
 	defer resp.Body.Close()
 	respBody, _ := io.ReadAll(resp.Body)
 	respBodyString := string(respBody)
