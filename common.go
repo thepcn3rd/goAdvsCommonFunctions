@@ -31,11 +31,11 @@ func CalcSHA256Hash(message string) string {
 // CheckError checks for errors
 func CheckError(reasonString string, err error, exitBool bool) {
 	if err != nil && exitBool == true {
-		fmt.Printf("%s\n", reasonString)
+		fmt.Printf("%s\n%v\n", reasonString, err)
 		//fmt.Printf("%s\n\n", err)
 		os.Exit(0)
 	} else if err != nil && exitBool == false {
-		fmt.Printf("%s\n", reasonString)
+		fmt.Printf("%s\n%v\n", reasonString, err)
 		//fmt.Printf("%s\n", err)
 		return
 	}
