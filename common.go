@@ -16,6 +16,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"net/http"
 	"io"
 	"os"
 	"path/filepath"
@@ -186,12 +187,12 @@ func LoadConfig(cPtr string) Configuration {
 	fmt.Println("Loading the following config file: " + cPtr + "\n")
 	// go logToSyslog(fmt.Sprintf("Loading the following config file: %s\n", *ConfigPtr))
 	configFile, err := os.Open(cPtr)
-	cf.CheckError("Unable to open the configuration file", err, true)
+	CheckError("Unable to open the configuration file", err, true)
 	defer configFile.Close()
 	decoder := json.NewDecoder(configFile)
 	// var config Configuration
 	if err := decoder.Decode(&c); err != nil {
-		cf.CheckError("Unable to decode the configuration file", err, true)
+		CheckError("Unable to decode the configuration file", err, true)
 	}
 
 	return c
