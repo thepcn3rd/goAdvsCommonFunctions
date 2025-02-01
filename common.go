@@ -16,7 +16,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"encoding/json"
 	"io"
 	"os"
 	"path/filepath"
