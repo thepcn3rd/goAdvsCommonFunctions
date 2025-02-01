@@ -16,7 +16,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"net/http"
+	"encoding/json"
 	"io"
 	"os"
 	"path/filepath"
