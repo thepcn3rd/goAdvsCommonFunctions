@@ -177,9 +177,6 @@ func PressEnterKeytoContinue() {
 	}
 }
 
-type Configuration struct {
-
-}
 
 func LoadConfig(cPtr string) Configuration {
 
