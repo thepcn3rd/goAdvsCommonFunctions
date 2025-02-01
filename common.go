@@ -177,7 +177,7 @@ func PressEnterKeytoContinue() {
 	}
 }
 
-
+/**
 func LoadConfig(cPtr string) Configuration {
 
 	var c Configuration
@@ -194,5 +194,6 @@ func LoadConfig(cPtr string) Configuration {
 
 	return c
 }
+**/
 
 
