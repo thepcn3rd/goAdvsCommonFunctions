@@ -161,3 +161,40 @@ func ZipCompression(srcFilename string, destFilename string) {
 
 	fmt.Println("File compressed successfully")
 }
+
+func PressEnterKeytoContinue() {
+	fmt.Println("Press enter to continue...")
+
+	// Create a new reader to read from standard input
+	reader := bufio.NewReader(os.Stdin)
+
+	// Read a single byte (key press)
+	_, err := reader.ReadByte()
+	if err != nil {
+		fmt.Println("Error reading input:", err)
+		return
+	}
+}
+
+type Configuration struct {
+
+}
+
+func LoadConfig(cPtr string) Configuration {
+
+	var c Configuration
+	fmt.Println("Loading the following config file: " + cPtr + "\n")
+	// go logToSyslog(fmt.Sprintf("Loading the following config file: %s\n", *ConfigPtr))
+	configFile, err := os.Open(cPtr)
+	cf.CheckError("Unable to open the configuration file", err, true)
+	defer configFile.Close()
+	decoder := json.NewDecoder(configFile)
+	// var config Configuration
+	if err := decoder.Decode(&c); err != nil {
+		cf.CheckError("Unable to decode the configuration file", err, true)
+	}
+
+	return c
+}
+
+
