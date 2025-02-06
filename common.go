@@ -19,6 +19,8 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"math/big"
+	"crypto/rand"
 )
 
 // ChatGPT helped find the below function
@@ -174,6 +176,16 @@ func PressEnterKeytoContinue() {
 		fmt.Println("Error reading input:", err)
 		return
 	}
+}
+
+func GenerateRandomString(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" // Define the characters to be used
+	var result string
+	for i := 0; i < length; i++ {
+		randomIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
+		result += string(charset[randomIndex.Int64()])
+	}
+	return result
 }
 
 /**
