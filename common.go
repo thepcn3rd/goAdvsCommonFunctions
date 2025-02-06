@@ -188,6 +188,23 @@ func GenerateRandomString(length int) string {
 	return result
 }
 
+func GenerateUUID() string {
+	uuid := make([]byte, 16)
+
+	// Generate 16 random bytes
+	_, err := rand.Read(uuid)
+	if err != nil {
+		panic(err)
+	}
+
+	// Set version (4) and variant bits
+	uuid[6] = (uuid[6] & 0x0f) | 0x40 // Version 4
+	uuid[8] = (uuid[8] & 0x3f) | 0x80 // Variant is 10
+
+	// Format the Uuniversally Unique Identifier (UUID) according to RFC 4122
+	return fmt.Sprintf("%x-%x-%x-%x-%x", uuid[0:4], uuid[4:6], uuid[6:8], uuid[8:10], uuid[10:])
+}
+
 /**
 func LoadConfig(cPtr string) Configuration {
 
