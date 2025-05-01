@@ -54,15 +54,6 @@ func DecryptString(key []byte, ciphertext string) (string, error) {
 	return string(data), nil
 }
 
-import (
-	"crypto/aes"
-	"crypto/cipher"
-	"crypto/rand"
-	"encoding/base64"
-	"errors"
-	"io"
-)
-
 // EncryptString encrypts a string using AES-256-GCM which provides both confidentiality and authenticity.
 func EncryptStringGCM(key []byte, plaintext string) (string, error) {
 	block, err := aes.NewCipher(key)
