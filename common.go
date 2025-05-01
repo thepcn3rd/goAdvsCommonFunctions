@@ -21,6 +21,7 @@ import (
 	"path/filepath"
 	"math/big"
 	"crypto/rand"
+	"time"
 )
 
 // ChatGPT helped find the below function
@@ -107,6 +108,43 @@ func CreateDefaultConfig(b64 string) {
 		fmt.Println("Created the config.json file, modify and rerun the app...")
 		os.Exit(1)
 	}
+}
+
+func DeleteFilesOlderThan(dir string, days int) error {
+	// Read all files in the directory
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return fmt.Errorf("error reading directory: %v", err)
+	}
+
+	// Calculate the cutoff time (days ago)
+	cutoff := time.Now().AddDate(0, 0, -days)
+
+	for _, entry := range entries {
+		// Skip directories
+		if entry.IsDir() {
+			continue
+		}
+
+		// Get file info to check modification time
+		info, err := entry.Info()
+		if err != nil {
+			fmt.Printf("Error getting file info for %s: %v\n", entry.Name(), err)
+			continue
+		}
+
+		// Check if the file is older than specified days
+		if info.ModTime().Before(cutoff) {
+			filePath := dir + "/" + entry.Name()
+			err := os.Remove(filePath)
+			if err != nil {
+				fmt.Printf("Error deleting file %s: %v\n", filePath, err)
+			} else {
+				fmt.Printf("Deleted file: %s (last modified: %v)\n", filePath, info.ModTime())
+			}
+		}
+	}
+	return nil
 }
 
 func CreateFileFromB64(b64 string, filename string) {
