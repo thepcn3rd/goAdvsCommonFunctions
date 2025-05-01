@@ -133,7 +133,7 @@ func PullKey(keyURL string, userAgentString string, xAbility string) string {
 	return respBodyString
 }
 
-func generateSalt(f string) (string, error) {
+func GenerateSalt(f string) (string, error) {
 	asciiChars := "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	saltLength := 256
 
