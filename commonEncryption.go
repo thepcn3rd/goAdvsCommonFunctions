@@ -54,6 +54,75 @@ func DecryptString(key []byte, ciphertext string) (string, error) {
 	return string(data), nil
 }
 
+import (
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"encoding/base64"
+	"errors"
+	"io"
+)
+
+// EncryptString encrypts a string using AES-256-GCM which provides both confidentiality and authenticity.
+func EncryptStringGCM(key []byte, plaintext string) (string, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return "", err
+	}
+
+	// Never use more than 2^32 random nonces with a given key because of the risk of repeat
+	nonce := make([]byte, 12)
+	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+		return "", err
+	}
+
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
+	}
+
+	ciphertext := aesgcm.Seal(nil, nonce, []byte(plaintext), nil)
+
+	// Prepend the nonce to the ciphertext
+	encryptedMsg := make([]byte, len(nonce)+len(ciphertext))
+	copy(encryptedMsg[:12], nonce)
+	copy(encryptedMsg[12:], ciphertext)
+
+	return base64.URLEncoding.EncodeToString(encryptedMsg), nil
+}
+
+// DecryptString decrypts a string using AES-256-GCM.
+func DecryptStringGCM(key []byte, ciphertext string) (string, error) {
+	data, err := base64.URLEncoding.DecodeString(ciphertext)
+	if err != nil {
+		return "", err
+	}
+
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return "", err
+	}
+
+	if len(data) < 12 {
+		return "", errors.New("ciphertext too short")
+	}
+
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
+	}
+
+	nonce := data[:12]
+	ciphertextBytes := data[12:]
+
+	plaintext, err := aesgcm.Open(nil, nonce, ciphertextBytes, nil)
+	if err != nil {
+		return "", err
+	}
+
+	return string(plaintext), nil
+}
+
 func PullKey(keyURL string, userAgentString string, xAbility string) string {
 	url := keyURL
 	req, err := http.NewRequest("POST", url, nil)
