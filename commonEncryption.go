@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"io"
+	"log"
 	"net/http"
 	"os"
 )
@@ -136,7 +137,7 @@ func generateSalt(f string) (string, error) {
 	asciiChars := "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	saltLength := 256
 
-	if !cf.FileExists("/" + f) {
+	if !FileExists("/" + f) {
 		// Generate random bytes
 		bytes := make([]byte, saltLength)
 		_, err := rand.Read(bytes)
