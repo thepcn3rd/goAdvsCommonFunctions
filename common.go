@@ -10,6 +10,7 @@ package common
 import (
 	"archive/zip"
 	"bufio"
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
@@ -17,10 +18,9 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"math/big"
 	"os"
 	"path/filepath"
-	"math/big"
-	"crypto/rand"
 	"time"
 )
 
@@ -261,5 +261,3 @@ func LoadConfig(cPtr string) Configuration {
 	return c
 }
 **/
-
-
