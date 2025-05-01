@@ -8,6 +8,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"os"
 )
 
 // EncryptString encrypts a string using AES-256 encryption with a random IV.
