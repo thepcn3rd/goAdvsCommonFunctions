@@ -130,3 +130,41 @@ func PullKey(keyURL string, userAgentString string, xAbility string) string {
 	//fmt.Println(string(respBody))
 	return respBodyString
 }
+
+func generateSalt(f string) (string, error) {
+	asciiChars := "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	saltLength := 256
+
+	if !cf.FileExists("/" + f) {
+		// Generate random bytes
+		bytes := make([]byte, saltLength)
+		_, err := rand.Read(bytes)
+		if err != nil {
+			log.Printf("Error generating random bytes: %v\n", err)
+			return "", err
+		}
+
+		// Convert bytes to ASCII characters
+		salt := make([]byte, saltLength)
+		for i := range salt {
+			salt[i] = asciiChars[int(bytes[i])%len(asciiChars)]
+		}
+
+		// Write to .salt file
+		err = os.WriteFile(f, salt, 0600)
+		if err != nil {
+			log.Printf("Error writing file: %v\n", err)
+			return "", err
+		}
+
+		return string(salt), nil
+	} else {
+		// Read the existing .salt file
+		salt, err := os.ReadFile(f)
+		if err != nil {
+			log.Printf("Error reading file: %v\n", err)
+			return "", err
+		}
+		return string(salt), nil
+	}
+}
