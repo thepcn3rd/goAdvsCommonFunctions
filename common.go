@@ -243,6 +243,18 @@ func GenerateUUID() string {
 	return fmt.Sprintf("%x-%x-%x-%x-%x", uuid[0:4], uuid[4:6], uuid[6:8], uuid[8:10], uuid[10:])
 }
 
+func ReadFile(filename string) (string, error) {
+	currentDir, err := os.Getwd()
+	CheckError("Unable to get the working directory", err, false)
+	fullPath := currentDir + "/" + filename
+	content, err := os.ReadFile(fullPath)
+	if err != nil {
+		return "", fmt.Errorf("failed to read %s: %w", filename, err)
+	}
+
+	return string(content), nil
+}
+
 /**
 func LoadConfig(cPtr string) Configuration {
 
