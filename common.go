@@ -255,17 +255,7 @@ func ReadFile(filename string) (string, error) {
 	return string(content), nil
 }
 
-func ReadFile(filename string) (string, error) {
-	currentDir, err := os.Getwd()
-	CheckError("Unable to get the working directory", err, false)
-	fullPath := currentDir + "/" + filename
-	content, err := os.ReadFile(fullPath)
-	if err != nil {
-		return "", fmt.Errorf("failed to read %s: %w", filename, err)
-	}
 
-	return string(content), nil
-}
 
 /**
 func LoadConfig(cPtr string) Configuration {
